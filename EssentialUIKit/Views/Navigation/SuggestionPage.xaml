@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EssentialUIKit.Views.Navigation.SuggestionPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:EssentialUIKit.Behaviors"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:controls="clr-namespace:EssentialUIKit.Controls"
+    xmlns:syncEffectsView="clr-namespace:Syncfusion.XForms.EffectsView;assembly=Syncfusion.Core.XForms"
+    xmlns:triggers="clr-namespace:EssentialUIKit.Triggers"
+    xmlns:viewmodel="clr-namespace:EssentialUIKit.ViewModels.Navigation"
+    x:Name="suggestionPage"
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    NavigationPage.HasNavigationBar="False">
+
+    <!--  Binding Context for Suggestion Page  -->
+    <ContentPage.BindingContext>
+        <viewmodel:SuggestionViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+
+        <Grid RowDefinitions="Auto, *" RowSpacing="0">
+
+            <StackLayout
+                x:Name="TitleView"
+                Grid.Row="0"
+                Padding="8"
+                BackgroundColor="{DynamicResource Gray-Bg}"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                Spacing="0">
+
+                <StackLayout
+                    x:Name="TitleLayout"
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="True"
+                    Orientation="Horizontal"
+                    Spacing="0"
+                    VerticalOptions="FillAndExpand">
+
+                    <!--  Back button command  -->
+                    <buttons:SfButton
+                        x:Name="backButton"
+                        Command="{Binding BackButtonCommand}"
+                        CommandParameter="{x:Reference backButton}"
+                        Style="{StaticResource IconButtonStyle}"
+                        Text="{StaticResource Back}" />
+
+                    <!--  Suggestion page Title  -->
+                    <Label
+                        Margin="16,0"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="FillAndExpand"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Suggestions"
+                        VerticalOptions="Center"
+                        VerticalTextAlignment="Center" />
+
+                </StackLayout>
+
+                <StackLayout
+                    x:Name="Search"
+                    HorizontalOptions="EndAndExpand"
+                    IsVisible="False"
+                    Orientation="Horizontal"
+                    Spacing="0">
+
+                    <!--  Back to title layout  -->
+                    <buttons:SfButton
+                        x:Name="BackToTitle"
+                        Style="{StaticResource IconButtonStyle}"
+                        Text="{StaticResource Back}">
+                        <buttons:SfButton.Behaviors>
+                            <behaviors:SearchBarAnimationBehavior AnimationType="shrink" />
+                        </buttons:SfButton.Behaviors>
+                    </buttons:SfButton>
+
+                    <!--  Rounded Search Entry  -->
+                    <border:SfBorder Style="{DynamicResource ThemeBorderStyle}">
+
+                        <controls:BorderlessEntry
+                            x:Name="SearchEntry"
+                            BindingContext="{x:Reference Suggestions}"
+                            HorizontalOptions="FillAndExpand"
+                            Placeholder="Search here"
+                            Style="{StaticResource BorderlessEntryStyle}"
+                            Text="{Binding SearchText, Mode=TwoWay}" />
+                    </border:SfBorder>
+
+                </StackLayout>
+
+                <!--  Search Button  -->
+                <buttons:SfButton
+                    x:Name="SearchButton"
+                    IsVisible="True"
+                    Style="{StaticResource IconButtonStyle}"
+                    Text="{StaticResource Search}">
+                    <buttons:SfButton.Behaviors>
+                        <behaviors:SearchBarAnimationBehavior AnimationType="expand" />
+                    </buttons:SfButton.Behaviors>
+                </buttons:SfButton>
+
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Spacing="0">
+
+                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+
+                <controls:SearchableSuggestionList
+                    x:Name="Suggestions"
+                    AutoFitMode="Height"
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    IsScrollBarVisible="False"
+                    ItemsSource="{Binding SuggestionList}"
+                    SelectionBackgroundColor="Transparent"
+                    VerticalOptions="FillAndExpand">
+
+                    <controls:SearchableSuggestionList.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <syncEffectsView:SfEffectsView
+                                    RippleColor="{DynamicResource Gray-300}"
+                                    TouchDownEffects="Ripple"
+                                    TouchUpCommand="{Binding Path=BindingContext.ItemTappedCommand, Source={x:Reference suggestionPage}}"
+                                    TouchUpCommandParameter="{Binding}">
+                                    <StackLayout BackgroundColor="{DynamicResource Gray-Bg}" Spacing="0">
+                                        <Grid
+                                            Margin="16,0"
+                                            ColumnDefinitions="Auto, *, Auto"
+                                            ColumnSpacing="0">
+
+                                            <!--  Suggestion Profile image  -->
+                                            <border:SfBorder
+                                                Margin="0,16"
+                                                BackgroundColor="{DynamicResource Gray-200}"
+                                                BorderColor="{DynamicResource Gray-Bg}"
+                                                BorderWidth="1"
+                                                CornerRadius="22"
+                                                HeightRequest="40"
+                                                Style="{StaticResource ProfileBorderStyle}"
+                                                WidthRequest="40">
+                                                <Image>
+                                                    <Image.Source>
+                                                        <UriImageSource
+                                                            CacheValidity="14"
+                                                            CachingEnabled="true"
+                                                            Uri="{Binding ImagePath}" />
+                                                    </Image.Source>
+                                                </Image>
+                                            </border:SfBorder>
+
+                                            <StackLayout
+                                                Grid.Column="1"
+                                                Margin="16,16,0,13"
+                                                BackgroundColor="{DynamicResource Gray-Bg}"
+                                                Spacing="3">
+
+                                                <!--  Suggestion name  -->
+                                                <Label
+                                                    FontFamily="Montserrat-Medium"
+                                                    HorizontalOptions="Start"
+                                                    Style="{StaticResource TitleLabelStyle}"
+                                                    Text="{Binding SuggestionName}" />
+
+                                                <!--  Suggestion Id  -->
+                                                <Label
+                                                    Grid.Row="1"
+                                                    HorizontalOptions="Start"
+                                                    Style="{StaticResource DescriptionLabelStyle}"
+                                                    Text="{Binding Id}" />
+
+                                            </StackLayout>
+
+                                            <!--  Suggestion button  -->
+                                            <buttons:SfButton
+                                                Grid.Column="2"
+                                                Margin="0,20"
+                                                BorderColor="{DynamicResource Gray-Bg}"
+                                                BorderWidth="1"
+                                                CornerRadius="24"
+                                                FontSize="12"
+                                                HeightRequest="32"
+                                                Style="{StaticResource GradientButtonStyle}"
+                                                Text="FOLLOW"
+                                                WidthRequest="100">
+                                                <buttons:SfButton.Triggers>
+                                                    <EventTrigger Event="Clicked">
+                                                        <triggers:ButtonTextTriggerAction />
+                                                    </EventTrigger>
+                                                </buttons:SfButton.Triggers>
+                                            </buttons:SfButton>
+
+                                        </Grid>
+                                        <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                                    </StackLayout>
+                                </syncEffectsView:SfEffectsView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </controls:SearchableSuggestionList.ItemTemplate>
+                </controls:SearchableSuggestionList>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

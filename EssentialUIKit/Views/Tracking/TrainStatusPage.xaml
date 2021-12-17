@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EssentialUIKit.Views.Tracking.TrainStatusPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+    xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
+    xmlns:viewModel="clr-namespace:EssentialUIKit.ViewModels.Tracking"
+    Title="Train Status"
+    BackgroundColor="{DynamicResource Gray-White}"
+    NavigationPage.HasNavigationBar="False"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="0">
+
+                <border:SfBorder
+                    Margin="16"
+                    BorderWidth="0"
+                    CornerRadius="10"
+                    VerticalOptions="Start">
+                    <Grid
+                        ColumnDefinitions="Auto, *, Auto"
+                        ColumnSpacing="0"
+                        RowDefinitions="Auto, Auto, Auto"
+                        RowSpacing="0"
+                        VerticalOptions="Start">
+
+                        <gradient:SfGradientView
+                            Grid.RowSpan="3"
+                            Grid.ColumnSpan="3"
+                            Style="{StaticResource SfGradientStyle}" />
+
+                        <!--  Train name and Train number  -->
+                        <Label
+                            Grid.Row="0"
+                            Grid.ColumnSpan="3"
+                            Margin="0,12,0,8"
+                            FontFamily="Montserrat-SemiBold"
+                            FontSize="14"
+                            HorizontalTextAlignment="Center"
+                            TextColor="{DynamicResource Gray-White}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TrainName}" />
+                                    <Span Text=" " />
+                                    <Span Text="-" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding TrainNumber}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <StackLayout
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="16,0,0,0"
+                            HorizontalOptions="StartAndExpand"
+                            Spacing="0">
+
+                            <!--  Departure station shortcut  -->
+                            <Label
+                                FontFamily="Montserrat-SemiBold"
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="{Binding DepartureStationShortcut}"
+                                TextColor="{DynamicResource Gray-White}" />
+
+                            <!--  Departure station name  -->
+                            <Label
+                                FontFamily="Montserrat-Medium"
+                                FontSize="12"
+                                HorizontalOptions="StartAndExpand"
+                                Text="{Binding DepartureStation}"
+                                TextColor="{DynamicResource Gray-White}" />
+                        </StackLayout>
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            FontAttributes="Bold"
+                            FontFamily="FontIcons"
+                            FontSize="24"
+                            HeightRequest="32"
+                            HorizontalOptions="Center"
+                            Text="{StaticResource ArrowRight}"
+                            TextColor="{DynamicResource Gray-White}"
+                            VerticalOptions="Center"
+                            WidthRequest="32" />
+
+                        <StackLayout
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="0,0,16,0"
+                            HorizontalOptions="EndAndExpand"
+                            Spacing="0">
+
+                            <!--  Arrival station shortcut  -->
+                            <Label
+                                FontFamily="Montserrat-SemiBold"
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="{Binding ArrivalStationShortcut}"
+                                TextColor="{DynamicResource Gray-White}" />
+
+                            <!--  Arrival station name  -->
+                            <Label
+                                FontFamily="Montserrat-Medium"
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="{Binding ArrivalStation}"
+                                TextColor="{DynamicResource Gray-White}" />
+                        </StackLayout>
+
+                        <!--  Duration  -->
+                        <Label
+                            Grid.Row="2"
+                            Grid.ColumnSpan="1"
+                            Margin="16,12,0,8"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="12"
+                            HorizontalOptions="StartAndExpand"
+                            Text="{Binding Duration, StringFormat='Duration: {0:HH} hrs {0:mm} mins'}"
+                            TextColor="{DynamicResource Gray-White}" />
+
+                        <!--  Stop count  -->
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="0,12,16,8"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="12"
+                            HorizontalOptions="End"
+                            TextColor="{DynamicResource Gray-White}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Stops:" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding StopCount}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                    </Grid>
+                </border:SfBorder>
+
+                <StackLayout
+                    Grid.Row="2"
+                    Margin="16,0,16,16"
+                    Padding="15,10"
+                    BackgroundColor="{DynamicResource Gray-200}"
+                    Orientation="Horizontal">
+                    <Label
+                        Margin="{OnPlatform Default='0,0,34,0',
+                                            Android='0,0,16,0'}"
+                        FontSize="14"
+                        HorizontalOptions="Start"
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Arrival" />
+                    <Label
+                        Margin="{OnPlatform Default='0,0,28,0',
+                                            Android='0,0,24,0'}"
+                        FontSize="14"
+                        HorizontalOptions="Start"
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Departure" />
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Start"
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Station" />
+                </StackLayout>
+
+                <!--  Step progress  -->
+                <progressBar:SfStepProgressBar
+                    x:Name="trainProgress"
+                    Margin="32,0,16,0"
+                    Orientation="Vertical"
+                    ProgressAnimationDuration="2000"
+                    TitleAlignment="Start"
+                    TitleSpace="16">
+
+                    <!--  Style for step progress not started  -->
+                    <progressBar:SfStepProgressBar.NotStartedStepStyle>
+                        <progressBar:StepStyle
+                            x:TypeArguments="progressBar:NotStartedStepState"
+                            MarkerContentSize="12"
+                            MarkerShapeType="Circle" />
+                    </progressBar:SfStepProgressBar.NotStartedStepStyle>
+
+                    <!--  Style for step progress inprogress  -->
+                    <progressBar:SfStepProgressBar.InProgressStepStyle>
+                        <progressBar:StepStyle
+                            x:TypeArguments="progressBar:InProgressStepState"
+                            MarkerFillColor="{StaticResource PrimaryColor}"
+                            MarkerShapeType="Circle"
+                            MarkerStrokeColor="{StaticResource PrimaryDarkColor}"
+                            ProgressLineColor="{StaticResource PrimaryColor}" />
+                    </progressBar:SfStepProgressBar.InProgressStepStyle>
+
+                    <!--  Style for step progress completed  -->
+                    <progressBar:SfStepProgressBar.CompletedStepStyle>
+                        <progressBar:StepStyle
+                            x:TypeArguments="progressBar:CompletedStepState"
+                            MarkerContentFillColor="{StaticResource Gray-White}"
+                            MarkerContentType="Tick"
+                            MarkerFillColor="{StaticResource PrimaryColor}"
+                            MarkerShapeType="Circle"
+                            MarkerStrokeColor="{StaticResource PrimaryDarkColor}"
+                            ProgressLineColor="{StaticResource PrimaryColor}" />
+                    </progressBar:SfStepProgressBar.CompletedStepStyle>
+
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <progressBar:StepView>
+                                <progressBar:StepView.PrimaryFormattedText>
+                                    <FormattedString>
+                                        <!--  Station name  -->
+                                        <Span Style="{StaticResource StationSpan}" Text="{Binding Name}" />
+                                        <Span Style="{StaticResource SpaceSpan}" />
+                                        <!--  Station distance  -->
+                                        <Span Style="{StaticResource DistanceSpan}" Text="{Binding Distance}" />
+                                        <Span Style="{StaticResource SpaceSpan}" />
+                                    </FormattedString>
+                                </progressBar:StepView.PrimaryFormattedText>
+                                <progressBar:StepView.SecondaryFormattedText>
+                                    <FormattedString>
+                                        <!--  Arrival  -->
+                                        <Span Style="{StaticResource ArraivalSpan}" Text="{Binding Arrival}" />
+                                        <Span Style="{StaticResource WhiteSpaceSpan}" />
+                                        <!--  Departure  -->
+                                        <Span Style="{StaticResource DepartureSpan}" Text="{Binding Departure}" />
+                                        <Span Style="{StaticResource SpaceSpan}" />
+                                        <!--  Arrival time span  -->
+                                        <Span Style="{StaticResource ArraivalTimeSpan}" />
+                                        <Span Style="{StaticResource WhiteSpaceSpan}" />
+                                        <!--  Departure time span  -->
+                                        <Span Style="{StaticResource DepartureTimeSpan}" />
+                                    </FormattedString>
+                                </progressBar:StepView.SecondaryFormattedText>
+                            </progressBar:StepView>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </progressBar:SfStepProgressBar>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

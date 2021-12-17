@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EssentialUIKit.AppLayout.Views.TemplatePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Listview="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:controls="clr-namespace:EssentialUIKit.AppLayout.Controls;assembly=EssentialUIKit"
+    xmlns:converter="clr-namespace:EssentialUIKit.Converters"
+    xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
+    xmlns:graphics="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+    xmlns:syncEffectsView="clr-namespace:Syncfusion.XForms.EffectsView;assembly=Syncfusion.Core.XForms"
+    xmlns:viewModels="clr-namespace:EssentialUIKit.AppLayout.ViewModels;assembly=EssentialUIKit"
+    xmlns:views="clr-namespace:EssentialUIKit.AppLayout.Views;assembly=EssentialUIKit"
+    Title="{Binding SelectedCategory.Name}"
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    Style="{StaticResource ContentPageStyle}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="AppLayoutStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+
+            <Style TargetType="graphics:SfGradientView">
+                <Setter Property="BackgroundBrush">
+                    <Setter.Value>
+                        <graphics:SfLinearGradientBrush>
+                            <graphics:SfLinearGradientBrush.GradientStops>
+                                <graphics:SfGradientStop Offset="0" Color="{DynamicResource PrimaryColor}" />
+                                <graphics:SfGradientStop Offset="1" Color="{DynamicResource PrimaryGradient}" />
+                            </graphics:SfLinearGradientBrush.GradientStops>
+                        </graphics:SfLinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewModels:TemplatePageViewModel x:Name="templatePageViewModel" />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="iOSSafeArea" Height="0" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <graphics:SfGradientView Grid.Row="0" Grid.RowSpan="3" />
+
+        <StackLayout
+            x:Name="ActionBarContent"
+            Grid.Row="1"
+            HorizontalOptions="FillAndExpand"
+            Orientation="Horizontal"
+            Spacing="0"
+            VerticalOptions="FillAndExpand">
+
+            <Button Clicked="BackButtonPressed" Style="{StaticResource ActionBarBackButtonStyle}" />
+
+            <Label
+                Margin="-10,0,0,0"
+                HorizontalOptions="StartAndExpand"
+                Style="{StaticResource ActionBarLabelStyle}"
+                Text="{Binding SelectedCategory.Name}"
+                VerticalOptions="CenterAndExpand" />
+
+            <Button
+                x:Name="GridIcon"
+                Clicked="GridIcon_Clicked"
+                FontSize="18"
+                Style="{StaticResource ActionBarSettingIconStyle}"
+                Text="&#xe733;"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="35" />
+            <Button
+                Clicked="GotoCodeViewer"
+                FontSize="18"
+                HorizontalOptions="End"
+                Style="{StaticResource ActionBarSettingIconStyle}"
+                Text="&#xe753;"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="35" />
+
+            <Button
+                Clicked="ShowSettings"
+                HorizontalOptions="End"
+                FontSize="18"
+                Style="{StaticResource ActionBarSettingIconStyle}"
+                VerticalOptions="CenterAndExpand" />
+        </StackLayout>
+
+        <border:SfBorder
+            Grid.Row="2"
+            Grid.RowSpan="2"
+            Padding="0,10,0,0"
+            BackgroundColor="{DynamicResource Gray-Bg}"
+            BorderWidth="0"
+            CornerRadius="10,10,0,0">
+
+            <Listview:SfListView
+                x:Name="ListView"
+                Margin="8,0"
+                AutoFitMode="DynamicHeight"
+                BackgroundColor="Transparent"
+                ItemSize="10"
+                ListViewCachingStrategy="RecycleTemplate"
+                ItemsSource="{Binding SelectedCategory.Pages}"
+                SelectionBackgroundColor="Transparent"
+                SelectionMode="Single">
+                <Listview:SfListView.ItemTemplate>
+                    <DataTemplate>
+                        <syncEffectsView:SfEffectsView
+                            AnimationCompleted="SfEffectsView_AnimationCompleted"
+                            RippleColor="{DynamicResource Gray-300}"
+                            TouchDownEffects="Ripple">
+                            <Grid>
+                                <Grid
+                                    x:Name="itemsListView"
+                                    Margin="8,6"
+                                    IsVisible="{Binding IsItemsListView, Source={x:Reference templatePageViewModel}}"
+                                    RowDefinitions="Auto, Auto"
+                                    VerticalOptions="CenterAndExpand">
+
+                                    <StackLayout Orientation="Horizontal">
+
+                                        <Label Style="{StaticResource ItemTitleStyle}" VerticalOptions="StartAndExpand" />
+
+                                        <Frame
+                                            Margin="0"
+                                            Padding="0"
+                                            BackgroundColor="#04B875"
+                                            CornerRadius="10"
+                                            HasShadow="False"
+                                            IsVisible="{Binding IsUpdate}">
+                                            <Frame.Content>
+                                                <Label
+                                                    Margin="5,1"
+                                                    FontFamily="Montserrat-Medium"
+                                                    FontSize="10"
+                                                    Text="{Binding UpdateType}"
+                                                    TextColor="{DynamicResource Gray-White}" />
+                                            </Frame.Content>
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Margin="0,5,0,0"
+                                        HorizontalOptions="StartAndExpand"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2"
+                                        Style="{StaticResource ItemDescriptionStyle}"
+                                        VerticalOptions="StartAndExpand" />
+
+                                </Grid>
+
+                                <Grid
+                                    x:Name="ItemsGridView"
+                                    HorizontalOptions="CenterAndExpand"
+                                    IsVisible="{Binding IsItemsGridView, Source={x:Reference templatePageViewModel}}"
+                                    RowDefinitions="Auto">
+
+                                    <Image
+                                        Aspect="AspectFit"
+                                        HeightRequest="260"
+                                        HorizontalOptions="StartAndExpand"
+                                        IsVisible="{Binding IsDarkTheme, Source={x:Reference templatePageViewModel}, Converter={StaticResource InverseBoolConverter}}"
+                                        Style="{StaticResource TemplateImageStyle}"
+                                        VerticalOptions="CenterAndExpand"
+                                        WidthRequest="180" />
+                                    <Image
+                                        Aspect="AspectFit"
+                                        HeightRequest="260"
+                                        HorizontalOptions="StartAndExpand"
+                                        IsVisible="{Binding IsDarkTheme, Source={x:Reference templatePageViewModel}}"
+                                        Style="{StaticResource TemplateDarkImageStyle}"
+                                        VerticalOptions="CenterAndExpand"
+                                        WidthRequest="180" />
+                                </Grid>
+                            </Grid>
+                        </syncEffectsView:SfEffectsView>
+                    </DataTemplate>
+                </Listview:SfListView.ItemTemplate>
+
+            </Listview:SfListView>
+
+        </border:SfBorder>
+
+        <views:SettingsView x:Name="SettingsView" Grid.RowSpan="4" />
+
+    </Grid>
+
+</ContentPage>
